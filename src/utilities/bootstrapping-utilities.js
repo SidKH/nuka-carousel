@@ -32,7 +32,8 @@ export const addAccessibility = (children, slidesToShow, currentSlide) => {
   }
 };
 
-export const getValidChildren = children => {
+export const getValidChildren = (children, props) => {
+  children = typeof children === 'function' ? children(props) : children;
   // .toArray automatically removes invalid React children
   return React.Children.toArray(children);
 };

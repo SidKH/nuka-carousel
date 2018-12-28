@@ -53,7 +53,7 @@ export default class Carousel extends React.Component {
       currentSlide: this.props.slideIndex,
       dragging: false,
       left: 0,
-      slideCount: getValidChildren(this.props.children).length,
+      slideCount: getValidChildren(this.props.children, {left: 0, top: 0}).length,
       top: 0,
       easing: easing.easeCircleOut,
       isWrappingAround: false,
@@ -103,7 +103,7 @@ export default class Carousel extends React.Component {
   // @TODO Remove deprecated componentWillReceiveProps with getDerivedStateFromProps
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
-    const slideCount = getValidChildren(nextProps.children).length;
+    const slideCount = getValidChildren(nextProps.children, {left: 0, top: 0}).length;
     const slideCountChanged = slideCount !== this.state.slideCount;
     this.setState(prevState => ({
       slideCount,
@@ -843,7 +843,6 @@ export default class Carousel extends React.Component {
     const touchEvents = this.getTouchEvents();
     const mouseEvents = this.getMouseEvents();
     const TransitionControl = Transitions[this.props.transitionMode];
-    const validChildren = getValidChildren(this.props.children);
 
     return (
       <div
@@ -920,7 +919,7 @@ export default class Carousel extends React.Component {
                 deltaX={tx}
                 deltaY={ty}
               >
-                {addAccessibility(validChildren, slidesToShow, currentSlide)}
+                {addAccessibility(getValidChildren(this.props.children, {left: tx, top: ty}), slidesToShow, currentSlide)}
               </TransitionControl>
             </div>
           )}
